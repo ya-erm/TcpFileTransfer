@@ -8,7 +8,7 @@ using TCPClient.Logic.Utils;
 
 namespace TCPClient.Models
 {
-    public class ClientModel: AModel
+    public class ClientModel : AModel
     {
         /// <summary>
         /// Адрес назначения
@@ -19,12 +19,29 @@ namespace TCPClient.Models
         /// Файл для отправки
         /// </summary>
         public FileInfo FileToSend { get => Get<FileInfo>(); set => Set(value); }
-        
+
         /// <summary>
         /// Хеш-сумма файла
         /// </summary>
         [DependsOn(nameof(FileToSend))]
-        public string MD5 { get => MD5Hash.FileHash(FileToSend?.FullName); }
+        public string MD5 {
+            get {
+
+                if (md5 == null)
+                {
+                    new Task(() =>
+                    {
+                        md5 = MD5Hash.FileHash(FileToSend?.FullName);
+                        Set(md5, nameof(MD5));
+                    }).Start();
+
+                    return MD5Hash.STRING_COMPUTING;
+                }
+
+                return md5;
+            }
+        }
+        public string md5 = null;
 
         /// <summary>
         /// Выбран ли файл для отправки
@@ -36,7 +53,7 @@ namespace TCPClient.Models
         /// Количество отправленных байт
         /// </summary>
         public long SentBytes { get => Get<long>(); set => Set(value); }
-        
+
         /// <summary>
         /// Процент прогресса отправки
         /// </summary>
@@ -54,7 +71,7 @@ namespace TCPClient.Models
         /// </summary>
         public ClientModel()
         {
-            DestinationAddress = new IpModel() { Ip = "127.0.0.1", Port = 1234 };
+            DestinationAddress = new IpModel() { Ip = "0.0.0.0", Port = 1234 };
         }
     }
 }

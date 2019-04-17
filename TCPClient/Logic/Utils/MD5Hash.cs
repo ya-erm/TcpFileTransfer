@@ -8,6 +8,8 @@ namespace TCPClient.Logic.Utils
 {
     public class MD5Hash
     {
+        public const string STRING_COMPUTING = "Вычисляется...";
+
         public static string FileHash(string filename)
         {
             if (!File.Exists(filename)) return null;

@@ -32,7 +32,7 @@ namespace TCPClient.Logic
                     using (var client = new TcpClient(ip, port))
                     using (var stream = client.GetStream())
                     {
-                        var fileHeader = new FileModel(vm.FileToSend);
+                        var fileHeader = new FileModel(vm.FileToSend, vm.md5);
                         Common.WriteFileHeader(stream, fileHeader);
                         var serverHeader = Common.ReadFileHeader(stream);
                         var start = serverHeader.Offset;

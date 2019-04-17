@@ -81,6 +81,7 @@
     <Compile Include="Logic\Utils\JsonConverter.cs" />
     <Compile Include="Logic\Server.cs" />
     <Compile Include="Logic\Utils\MD5Hash.cs" />
+    <Compile Include="Models\MainConfiguration.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

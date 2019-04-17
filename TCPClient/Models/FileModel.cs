@@ -14,7 +14,7 @@ namespace TCPClient.Models
     /// Модель заголовка передаваемого файла
     /// </summary>
     [DataContract]
-    public class FileModel: AModel
+    public class FileModel : AModel
     {
         /// <summary>
         /// Название файла
@@ -58,11 +58,13 @@ namespace TCPClient.Models
         /// Конструктор модели передаваемого файла
         /// </summary>
         /// <param name="fileInfo">Информация о файле</param>
-        public FileModel(FileInfo fileInfo)
+        public FileModel(FileInfo fileInfo, string md5)
         {
             Name = fileInfo.Name;
             Length = fileInfo.Length;
-            MD5 = MD5Hash.FileHash(fileInfo.FullName);
+            MD5 = (md5 == MD5Hash.STRING_COMPUTING)
+                ? MD5Hash.FileHash(fileInfo.FullName)
+                : md5;
         }
     }
 }

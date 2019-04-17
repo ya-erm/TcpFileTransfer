@@ -28,5 +28,6 @@ namespace TCPClient.Logic
             // Передаём сам заголовок
             stream.Write(fileHeaderBytes, 0, fileHeaderLength);
         }
+
     }
 }

@@ -14,7 +14,9 @@ namespace TCPClient.Models
         private static MainModel instance { get; set; } = new MainModel();
         private MainModel()
         {
-            Client = new ClientModel();
+            Config = MainConfiguration.Load();
+
+            Client = new ClientModel() { DestinationAddress = Config.ClientAddress };
             Server = new ServerModel();
         }
         #endregion
@@ -23,5 +25,13 @@ namespace TCPClient.Models
 
         public ServerModel Server { get => Get<ServerModel>(); set => Set(value); }
 
+
+        private MainConfiguration Config { get => Get<MainConfiguration>(); set => Set(value); }
+
+        public void SaveConfig()
+        {
+            Config.ClientAddress = Client.DestinationAddress;
+            Config.Save();
+        }
     }
 }

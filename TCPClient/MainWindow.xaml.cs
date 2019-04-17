@@ -40,6 +40,8 @@ namespace TCPClient
         private void ButtonConnect_Click(object sender, RoutedEventArgs e)
         {
             Client.Send();
+
+            vm.SaveConfig();
         }
 
         private void button_Cancel_Click(object sender, RoutedEventArgs e)
