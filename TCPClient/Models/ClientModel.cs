@@ -63,8 +63,12 @@ namespace TCPClient.Models
         /// <summary>
         /// Время передачи файла
         /// </summary>
-        public DateTime SendingTime { get => Get<DateTime>(); set => Set(value); }
+        public TimeSpan SendingTime { get => Get<TimeSpan>(); set => Set(value); }
 
+        /// <summary>
+        /// Скорость передачи файла
+        /// </summary>
+        public SpeedModel Speed { get => Get<SpeedModel>(); set => Set(value); }
 
         /// <summary>
         /// Конструктор
@@ -72,6 +76,7 @@ namespace TCPClient.Models
         public ClientModel()
         {
             DestinationAddress = new IpModel() { Ip = "0.0.0.0", Port = 1234 };
+            Speed = new SpeedModel();
         }
     }
 }

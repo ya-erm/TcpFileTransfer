@@ -95,6 +95,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Прогресс:"/>
                     <ProgressBar Grid.Column="1" Height="20" Value="{Binding Client.SentBytes}" Maximum="{Binding Client.FileToSend.Length}"/>
+                    <TextBlock Grid.Column="1" Text="Завершено" TextAlignment="Center" Visibility="{c:Binding Path='Client.SentBytes > 0 and Client.SentBytes>=Client.FileToSend.Length'}"/>
                     <TextBlock Grid.Column="2" Text="{Binding Client.Persentage, StringFormat='{}{0:n0} %'}" Width="40"/>
                 </Grid>
 
@@ -110,7 +111,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Время:" Grid.ColumnSpan="2"/>
-                    <TextBlock Grid.Column="2" Text="{Binding Client.SendingTime, StringFormat={}{0:HH:mm:ss.f}}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Client.SendingTime, StringFormat={}{0:hh':'mm':'ss'.'f}}"/>
                     <TextBlock Grid.Column="4" Text="{Binding Client.SentBytes, StringFormat='{}{0} байт'}"/>
                     <TextBlock Grid.Column="5" Text="/" Margin="0,5"/>
                     <TextBlock Grid.Column="6" Text="{Binding Client.FileToSend.Length, StringFormat='{}{0} байт'}"/>
@@ -118,12 +119,14 @@
 
                 <Grid Grid.Row="5" Visibility="{c:Binding Path='Client.IsFileSelected'}">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition />
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{Binding Client.MD5, StringFormat='MD5:  {0}'}" TextAlignment="Right"/>
-                    <Button Grid.Column="1" Padding="0" Width="18" Height="18" ToolTip="Копировать" Click="ButtonCopyClientMD5_Click">
+                    <TextBlock Text="{Binding Path=Client.Speed.PrettyValue, StringFormat='Скорость: {0}'}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Client.MD5, StringFormat='MD5:  {0}'}" TextAlignment="Right"/>
+                    <Button Grid.Column="3" Padding="0" Width="18" Height="18" ToolTip="Копировать" Click="ButtonCopyClientMD5_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Grid Background="Transparent">
@@ -183,6 +186,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Прогресс:"/>
                     <ProgressBar Grid.Column="1" Height="20" Value="{Binding Server.ReceivedBytes}" Maximum="{Binding Server.InputFile.Length}"/>
+                    <TextBlock Grid.Column="1" Text="Завершено" TextAlignment="Center" Visibility="{c:Binding Path='Server.ReceivedBytes > 0 and Server.ReceivedBytes>=Server.InputFile.Length'}"/>
                     <TextBlock Grid.Column="2" Text="{Binding Server.Persentage, StringFormat='{}{0:n0} %'}" Width="40"/>
                 </Grid>
 
@@ -198,7 +202,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Время:" Grid.ColumnSpan="2"/>
-                    <TextBlock Grid.Column="2" Text="{Binding Server.ReceivedTime, StringFormat={}{0:HH:mm:ss.f}}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Server.ReceivedTime, StringFormat={}{0:hh':'mm':'ss'.'f}}"/>
                     <TextBlock Grid.Column="4" Text="{Binding Server.ReceivedBytes, StringFormat='{}{0} байт'}"/>
                     <TextBlock Grid.Column="5" Text="/" Margin="0,5"/>
                     <TextBlock Grid.Column="6" Text="{Binding Server.InputFile.Length, StringFormat='{}{0} байт'}"/>
@@ -206,12 +210,14 @@
 
                 <Grid Grid.Row="5" Visibility="{c:Binding Path='Server.InputFile!=null'}">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition />
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{Binding Server.InputFile.MD5, StringFormat='MD5:  {0}'}" TextAlignment="Right"/>
-                    <Button Grid.Column="1" Padding="0" Width="18" Height="18" ToolTip="Копировать" Click="ButtonCopyServerMD5_Click">
+                    <TextBlock Text="{Binding Path=Server.Speed.PrettyValue, StringFormat='Скорость: {0}'}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Server.InputFile.MD5, StringFormat='MD5:  {0}'}" TextAlignment="Right"/>
+                    <Button Grid.Column="3" Padding="0" Width="18" Height="18" ToolTip="Копировать" Click="ButtonCopyServerMD5_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Grid Background="Transparent">

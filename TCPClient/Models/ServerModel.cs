@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCPClient.Models
 {
-    public class ServerModel: AModel
+    public class ServerModel : AModel
     {
         /// <summary>
         /// Адрес сервера
@@ -27,7 +27,7 @@ namespace TCPClient.Models
         /// Принимаемый файл
         /// </summary>
         public FileModel InputFile { get => Get<FileModel>(); set => Set(value); }
-        
+
         /// <summary>
         /// Количество принятых байт
         /// </summary>
@@ -42,13 +42,21 @@ namespace TCPClient.Models
         /// <summary>
         /// Время приёма файла
         /// </summary>
-        public DateTime ReceivedTime { get => Get<DateTime>(); set => Set(value); }
+        public TimeSpan ReceivedTime { get => Get<TimeSpan>(); set => Set(value); }
+
+        /// <summary>
+        /// Скорость приёма файла
+        /// </summary>
+        public SpeedModel Speed { get => Get<SpeedModel>(); set => Set(value); }
 
 
         public ServerModel()
         {
             IsPortOpen = false;
             Address = new IpModel() { Ip = "127.0.0.1", Port = 1234 };
+            Speed = new SpeedModel();
         }
     }
+
+   
 }

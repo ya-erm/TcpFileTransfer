@@ -13,7 +13,7 @@ namespace TCPClient.Models
         /// <summary>
         /// Словарь значений приватных свойств
         /// </summary>
-        private Dictionary<string, object> _values;
+        private Dictionary<string, object> _values = new Dictionary<string, object>();
 
         /// <summary>
         /// Установить значение свойства с вызовом PropertyChanged

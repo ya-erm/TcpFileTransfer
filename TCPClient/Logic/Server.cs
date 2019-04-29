@@ -48,7 +48,7 @@ namespace TCPClient.Logic
                             vm.InputFile = Common.ReadFileHeader(stream);
                             var fileMode = FileMode.Create;
                             var filePath = string.Empty;
-                            if (fp.ReceivedFilePaths.ContainsKey(vm.InputFile.MD5))
+                            if (vm.InputFile.MD5 != null && fp.ReceivedFilePaths.ContainsKey(vm.InputFile.MD5))
                             {
                                 filePath = fp.ReceivedFilePaths[vm.InputFile.MD5];
                                 if (File.Exists(filePath))
@@ -61,7 +61,8 @@ namespace TCPClient.Logic
                             else
                             {
                                 vm.ReceivedBytes = 0;
-                                vm.ReceivedTime = new DateTime();
+                                vm.ReceivedTime = new TimeSpan();
+                                vm.Speed.Clear();
                             }
                             Common.WriteFileHeader(stream, vm.InputFile);
                             // Запрашиваем место сохранения, если файл ранее не скачивался
@@ -70,7 +71,8 @@ namespace TCPClient.Logic
                                 if (saveFileDialog.ShowDialog() == true)
                                 {
                                     filePath = saveFileDialog.FileName;
-                                    fp.ReceivedFilePaths.Add(vm.InputFile.MD5, filePath);
+                                    if (vm.InputFile.MD5 != null)
+                                        fp.ReceivedFilePaths.Add(vm.InputFile.MD5, filePath);
                                     fp.Save();
                                 }
                                 else
@@ -82,8 +84,9 @@ namespace TCPClient.Logic
                             {
                                 // Получаем сам файл
                                 timer?.Start();
-                                vm.ReceivedTime = new DateTime();
-                                var buf = new byte[1024];
+                                vm.ReceivedTime = new TimeSpan();
+                                vm.Speed.Clear();
+                                var buf = new byte[32*1024];
                                 do
                                 {
                                     var count = stream.Read(buf, 0, buf.Length);
@@ -103,18 +106,23 @@ namespace TCPClient.Logic
 
             });
 
+            var tick = 0;
             // Настраиваем таймер
             timer = new DispatcherTimer(
-                TimeSpan.FromMilliseconds(1000),
+                TimeSpan.FromMilliseconds(100),
                 DispatcherPriority.Normal,
                 new EventHandler((o, e) =>
                 {
                     if (vm.ReceivedBytes < vm.InputFile?.Length)
-                        vm.ReceivedTime = vm.ReceivedTime.AddMilliseconds(1000);
+                    {
+                        vm.ReceivedTime = vm.ReceivedTime.Add(timer.Interval);
+                        if (++tick % 10 == 0)
+                            vm.Speed.AddPoint(vm.ReceivedTime, vm.ReceivedBytes);
+                    }
                 }),
                 Dispatcher.CurrentDispatcher
             )
-            { IsEnabled = false };            
+            { IsEnabled = false };
         }
 
 

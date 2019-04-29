@@ -50,6 +50,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -99,6 +103,7 @@
     <Compile Include="Models\MainModel.cs" />
     <Compile Include="Models\AModel.cs" />
     <Compile Include="Models\ServerModel.cs" />
+    <Compile Include="Models\SpeedModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -140,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\copy-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DLLs\System.ValueTuple.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

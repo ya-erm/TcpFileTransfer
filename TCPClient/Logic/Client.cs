@@ -37,10 +37,11 @@ namespace TCPClient.Logic
                         var serverHeader = Common.ReadFileHeader(stream);
                         var start = serverHeader.Offset;
                         // Передаём байты файла
-                        vm.SendingTime = new DateTime();
+                        vm.SendingTime = new TimeSpan();
+                        vm.Speed.Clear();
                         for (var i = start; i < file.Length;)
                         {
-                            var arr = new byte[1024];
+                            var arr = new byte[32*1024];
                             var count = file.Read(arr, 0, arr.Length);
                             stream.Write(arr, 0, count);
 
@@ -61,7 +62,8 @@ namespace TCPClient.Logic
                 {
                     timer?.Stop();
                     MessageBox.Show(ex.Message, "При передаче файла возникла ошибка");
-                    vm.SendingTime = new DateTime();
+                    vm.SendingTime = new TimeSpan();
+                    vm.Speed.Clear();
                 }
                 finally
                 {
@@ -72,13 +74,18 @@ namespace TCPClient.Logic
                 }
             });
 
+            var tick = 0;
             timer = new DispatcherTimer(
-                new TimeSpan(0, 0, 0, 0, 100),
+                TimeSpan.FromMilliseconds(100),
                 DispatcherPriority.Normal, 
                 new EventHandler((o, e) =>
                 {
                     if (vm.SentBytes < vm.FileToSend.Length)
-                        vm.SendingTime = vm.SendingTime.AddMilliseconds(100);
+                    {
+                        vm.SendingTime = vm.SendingTime.Add(timer.Interval);
+                        if (++tick % 10 == 0)
+                            vm.Speed.AddPoint(vm.SendingTime, vm.SentBytes);
+                    }
                 }),
                 Dispatcher.CurrentDispatcher
             );
